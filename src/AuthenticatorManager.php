@@ -1,4 +1,4 @@
-<?php namespace Bernardino\EasyAuthenticator;
+<?php namespace Crtek\Authenticator;
 
 use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
@@ -23,14 +23,14 @@ class AuthenticatorManager extends BaseController {
         $this->socialite = $socialite;
     }
 
-    public function login($provider)
+    public function login($provider, $stateless = false)
     {
-        return $this->authentication->execute($this->request->all(), $provider);
+        return $this->authentication->execute($this->request->all(), $provider, $stateless);
     }
 
     public function logout()
     {
         $this->auth->logout();
-        return redirect(config('easyAuthenticator.logout_redirect'));
+        return redirect(config('Authenticator.logout_redirect'));
     }
 }

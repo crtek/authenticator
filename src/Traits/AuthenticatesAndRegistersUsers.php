@@ -1,4 +1,4 @@
-<?php namespace Bernardino\EasyAuthenticator\Traits;
+<?php namespace Crtek\Authenticator\Traits;
 
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\Registrar;
 use Config;
 use Session;
 use Mail;
-use Bernardino\EasyAuthenticator\Models\User;
+use Crtek\Authenticator\Models\User;
 
 trait AuthenticatesAndRegistersUsers {
 
@@ -31,7 +31,7 @@ trait AuthenticatesAndRegistersUsers {
      */
     public function getRegister()
     {
-        return view('easyAuthenticator::register');
+        return view('Authenticator::register');
     }
 
     /**
@@ -51,7 +51,7 @@ trait AuthenticatesAndRegistersUsers {
             );
         }
 
-        if (config('easyAuthenticator.activation')) {
+        if (config('Authenticator.activation')) {
             $activation_code = str_random(60) . $request->input('email');
             $user = new User;
             $user->name = $request->input('name');
@@ -64,8 +64,8 @@ trait AuthenticatesAndRegistersUsers {
                     'name' => $user->name,
                     'code' => $activation_code,
                 );
-                Mail::queue('easyAuthenticator::activateAccount', $data, function($message) use ($user) {
-                    $message->to($user->email, $user->name)->subject(config('easyAuthenticator.email_subject'));
+                Mail::queue('Authenticator::activateAccount', $data, function($message) use ($user) {
+                    $message->to($user->email, $user->name)->subject(config('Authenticator.email_subject'));
                 });
                 return view('user.activateAccount');
             }
@@ -93,7 +93,7 @@ trait AuthenticatesAndRegistersUsers {
      * @return \Illuminate\Http\Response
      */
     public function postLogin(Request $request)
-    {
+    {return response()->json(array('request' => $request));
         $this->validate($request, [
             'email' => 'required', 'password' => 'required',
         ]);
@@ -150,7 +150,7 @@ trait AuthenticatesAndRegistersUsers {
             return $this->redirectPath;
         }
 
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : Config::get('easyAuthenticator.login_redirect');
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : Config::get('Authenticator.login_redirect');
     }
 
     /**
@@ -160,7 +160,7 @@ trait AuthenticatesAndRegistersUsers {
      */
     public function loginPath()
     {
-        return property_exists($this, 'loginPath') ? $this->loginPath : Config::get('easyAuthenticator.login_page');
+        return property_exists($this, 'loginPath') ? $this->loginPath : Config::get('Authenticator.login_page');
     }
 
 }

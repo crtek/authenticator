@@ -1,9 +1,9 @@
-<?php namespace Bernardino\EasyAuthenticator;
+<?php namespace Crtek\Authenticator;
 
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
-use Bernardino\EasyAuthenticator\Traits\AuthenticatesAndRegistersUsers;
-use Bernardino\EasyAuthenticator\Models\User;
+use Crtek\Authenticator\Traits\AuthenticatesAndRegistersUsers;
+use Crtek\Authenticator\Models\User;
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -48,7 +48,7 @@ class AuthController extends BaseController {
             Auth::loginUsingId($user->id);
         }
 
-        return redirect(config('easyAuthenticator.login_redirect'));
+        return redirect(config('Authenticator.login_redirect'));
     }
 
 }

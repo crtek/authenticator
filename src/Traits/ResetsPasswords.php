@@ -1,4 +1,4 @@
-<?php namespace Bernardino\EasyAuthenticator\Traits;
+<?php namespace Crtek\Authenticator\Traits;
 
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
@@ -28,7 +28,7 @@ trait ResetsPasswords {
      */
     public function getEmail()
     {
-        return view('easyAuthenticator::password');
+        return view('Authenticator::password');
     }
 
     /**
@@ -79,7 +79,7 @@ trait ResetsPasswords {
             throw new NotFoundHttpException;
         }
 
-        return view('easyAuthenticator::reset')->with('token', $token);
+        return view('Authenticator::reset')->with('token', $token);
     }
 
     /**

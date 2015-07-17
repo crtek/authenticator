@@ -1,6 +1,6 @@
-<?php namespace Bernardino\EasyAuthenticator\Repositories;
+<?php namespace Crtek\Authenticator\Repositories;
 
-use Bernardino\EasyAuthenticator\Models\User;
+use Crtek\Authenticator\Models\User;
 use Config;
 
 class UserRepository {
@@ -8,7 +8,7 @@ class UserRepository {
     public function findByUserNameOrCreate($userData, $provider) {
 
         if (!isset($userData->email)) {
-            $userData->email = time() . '-no-reply@easyauthenticator.com';
+            $userData->email = time() . '-no-reply@authenticator.com';
         }
 
         $user = User::where('provider_id', '=', $userData->id)->first();

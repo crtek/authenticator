@@ -1,4 +1,4 @@
-<?php namespace Bernardino\EasyAuthenticator\Models;
+<?php namespace Crtek\Authenticator\Models;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +10,10 @@ use Auth;
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
     use Authenticatable, CanResetPassword;
+    public function __construct($userdata = null, $moredata = null) {
+    if (!$userdata) return;
+        //[...]
+    }
 
     /**
      * The database table used by the model.

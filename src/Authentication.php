@@ -1,10 +1,14 @@
-<?php namespace Bernardino\EasyAuthenticator;
+<?php namespace Crtek\Authenticator;
 
-use Bernardino\EasyAuthenticator\Repositories\UserRepository as Users;
+use Crtek\Authenticator\Repositories\UserRepository as Users;
 use Laravel\Socialite\Contracts\Factory as Socialite;
 use Illuminate\Contracts\Auth\Guard;
 use Request;
 use Session;
+//crtek
+use Tymon\JWTAuth\Facades\JWTAuth as JWTAuth;
+use Tymon\JWTAuth\Facades\JWTFactory as JWTFactory;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class Authentication extends AuthenticatorManager {
 
@@ -20,33 +24,50 @@ class Authentication extends AuthenticatorManager {
         $this->auth = $auth;
     }
 
-    public function execute($request = null, $provider) {
-        if (!$request) return $this->getAuthorizationFirst($provider);
-        $user = $this->users->findByUserNameOrCreate($this->getSocialUser($provider), $provider);
+    public function execute($request = null, $provider, $stateless = false) {
+        if (!$request) return $this->getAuthorizationFirst($provider, $stateless);
+        $user = $this->users->findByUserNameOrCreate($this->getSocialUser($provider, $stateless, $request), $provider);
 
         if(!$user) {
-            return redirect(config('easyAuthenticator.login_page'))->with('session', 'Email is already in use');
+            return redirect(config('Authenticator.login_page'))->with('session', 'Email is already in use');
         }
 
-        (config('easyAuthenticator.flash_session')) ?:
+        (config('Authenticator.flash_session')) ?:
             Session::flash(
-                config('easyAuthenticator.flash_session_key'),
-                config('easyAuthenticator.flash_session_login')
+                config('Authenticator.flash_session_key'),
+                config('Authenticator.flash_session_login')
             );
         $this->auth->login($user, true);
 
-        return $this->userHasLoggedIn($user);
+        return $this->userHasLoggedIn($user, $stateless);
     }
 
-    private function getAuthorizationFirst($provider) {
+    private function getAuthorizationFirst($provider, $stateless = false) {
+        if($stateless) {
+            //return $this->socialite->driver($provider)->stateless()->redirect();
+            return response()->json(array('Error' => 'You should login first.'), 401);
+        }
         return $this->socialite->driver($provider)->redirect();
     }
 
-    private function getSocialUser($provider) {
+    private function getSocialUser($provider, $stateless = false, $request = false) {
+        if($stateless) {
+            return $this->socialite->driver($provider)->stateless()->user();
+        }
         return $this->socialite->driver($provider)->user();
     }
 
-    public function userHasLoggedIn($user) {
-        return redirect(config('easyAuthenticator.login_redirect'));
+    public function userHasLoggedIn($user, $stateless = false) {
+        if($stateless) {/*
+            echo '<pre>';
+            echo 'crtek'.$user->id();
+            print_r($user);
+            $token = JWTAuth::fromUser($user);
+            return response()->json(array('user' => $user)); 
+            exit();/**/
+            $token = JWTAuth::fromUser($user);
+            return response()->json(array('token' => $token, 'crtek' => 'crtek')); 
+        }
+        return redirect(config('Authenticator.login_redirect'));
     }
 }

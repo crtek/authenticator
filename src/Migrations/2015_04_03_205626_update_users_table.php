@@ -14,13 +14,15 @@ class UpdateUsersTable extends Migration {
 	{
         Schema::table('users', function(Blueprint $table)
         {
+            $table->string('password')->nullable()->change();
+            $table->string('name')->nullable()->change();
+            $table->string('email')->default(time() . '-no-reply@Authenticator.com')->change();
             $table->string('username')->nullable();
-            $table->string('email')->unique()->default(time() . '-no-reply@EasyAuthenticator.com')->change();
-            $table->string('avatar');
+            $table->string('avatar')->nullable();
             $table->string('provider')->default('laravel');
-            $table->string('provider_id')->unique();
-            $table->string('activation_code');
-            $table->integer('active');
+            $table->string('provider_id')->unique()->nullable();
+            $table->string('activation_code')->nullable();
+            $table->integer('active')->nullable();
         });
 	}
 
@@ -31,7 +33,13 @@ class UpdateUsersTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+        $table->dropColumn('username');
+        $table->string('email')->default()->change();
+        $table->dropColumn('avatar');
+        $table->dropColumn('provider');
+        $table->dropColumn('provider_id');
+        $table->dropColumn('activation_code');
+        $table->dropColumn('active');
 	}
 
 }

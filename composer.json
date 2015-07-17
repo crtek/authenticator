@@ -1,21 +1,22 @@
 {
-    "name": "bernardino/easy-authenticator",
+    "name": "crtek/authenticator",
     "description": "Makes authenticating users with your DB or Social networks a Breeze!",
     "keywords": ["laravel", "oauth", "social", "socialite", "authentication"],
     "require": {
         "laravel/socialite": "~2.0",
-        "doctrine/dbal": "~2.3"
+        "doctrine/dbal": "~2.3",
+        "tymon/jwt-auth": "0.5.*"
     },
     "license": "MIT",
     "authors": [
         {
-            "name": "Luca Bernardino",
-            "email": "bernardino.luca@gmail.com"
+            "name": "Crt Zerjal",
+            "email": "crt.zerjal@gmail.com"
         }
     ],
      "autoload": {
         "psr-4": {
-            "Bernardino\\EasyAuthenticator\\": "src/"
+            "Crtek\\Authenticator\\": "src/"
         }
     },
     "minimum-stability": "stable"
