@@ -28,11 +28,11 @@ Route::get(config('Authenticator.login_redirect'), function() {
     return view('Authenticator::dashboard')->with('user', $user);
 });
 
-Route::get('auth/{provider?}', function($provider = null) {
+Route::get(config('Authenticator.auth_url').'/{provider?}', function($provider = null) {
     return $this->app['authenticator']->login($provider);
 });
 
-Route::post('auth/{provider?}', [/*'middleware' =>'jwtAuth',*/ function($provider = null, Request $request) {
+Route::post(config('Authenticator.auth_url').'/{provider?}', [/*'middleware' =>'jwtAuth',*/ function($provider = null, Request $request) {
 	//if the api has a different redirect uri socialite should use it
 	if(Request::has('redirectUri')){
 		Config::set('services.'.$provider.'.redirect', Request::input('redirectUri'));
@@ -40,7 +40,7 @@ Route::post('auth/{provider?}', [/*'middleware' =>'jwtAuth',*/ function($provide
     return $this->app['authenticator']->login($provider, true);
 }]);
 /*dummy soute for satellizer cal*/
-Route::get('authAPI/{provider?}', function(){exit();});
+Route::get(config('Authenticator.auth_api_url').'/{provider?}', function(){exit();});
 // API Routes.
 Route::get('auth/api/me', ['middleware' => 'jwtAuth', function() {
 	$user =  Auth::User();

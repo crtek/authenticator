@@ -34,5 +34,15 @@ return [
     'activation' => FALSE,
     // Set a subject line for the email.
     'email_subject' => 'Please activate your account.',
+
+    /**
+     * The route for authentication
+     */
+    'auth_url' => 'authenticator',
+
+    /**
+     * The route for API authentication
+     */
+    'auth_api_url' => 'authenticatorAPI',
     
 ];
