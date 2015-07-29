@@ -71,9 +71,13 @@ class ApiController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(Request $request)
 	{
-		//
+		//update user info
+		$user = Auth::User();
+       	$user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->save();
 	}
 
 	/**
@@ -88,8 +92,7 @@ class ApiController extends Controller {
 	}
 
 	//crtek :)
-	public function getUser(Request $request){
-		//$user = User::find(4);
+	public function getUser(){
 		$user = Auth::User();
         return $user;
 	}

@@ -16,7 +16,7 @@ Route::controllers([
 ]);
 
 Route::get(config('Authenticator.login_page'), function() {
-    return view('Authenticator::login');
+    return view('Authenticator::login')->with('url', config('Authenticator.auth_url'));
 });
 
 Route::get(config('Authenticator.logout'), function() {
@@ -42,10 +42,10 @@ Route::post(config('Authenticator.auth_url').'/{provider?}', [/*'middleware' =>'
 /*dummy soute for satellizer cal*/
 Route::get(config('Authenticator.auth_api_url').'/{provider?}', function(){exit();});
 // API Routes.
-Route::get('auth/api/me', ['middleware' => 'jwtAuth', function() {
+Route::get(config('Authenticator.auth_api_url').'/me', ['middleware' => 'jwtAuth', function() {
 	$user =  Auth::User();
     return $user;
 }/*'uses' => 'Bernardino\Authenticator\ApiController@getUser'*/]);
-Route::put('auth/api/me', ['middleware' => 'jwtAuth', 'uses' => 'Crtek\Authenticator\ApiController@getUser']);
+Route::put(config('Authenticator.auth_api_url').'/me', ['middleware' => 'jwtAuth', 'uses' => 'Crtek\Authenticator\ApiController@update']);
 
 Route::get('activate/{code}', 'Crtek\Authenticator\AuthController@accountIsActive');

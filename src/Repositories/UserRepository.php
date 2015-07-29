@@ -19,6 +19,15 @@ class UserRepository {
         }
 
         if(!$user) {
+            $user = new User;
+            $user->provider_id = $userData->id;
+            $user->provider = $provider;
+            $user->name = $userData->name;
+            $user->username = $userData->nickname;
+            $user->email = $userData->email;
+            $user->avatar = $userData->avatar;
+            $user->save();    
+            /*
             $user = User::create([
                 'provider_id' => $userData->id,
                 'provider' => $provider,
@@ -27,6 +36,7 @@ class UserRepository {
                 'email' => $userData->email,
                 'avatar' => $userData->avatar,
             ]);
+            */
         }
         $this->checkIfUserNeedsUpdating($userData, $user);
         return $user;

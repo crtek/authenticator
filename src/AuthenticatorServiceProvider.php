@@ -8,7 +8,15 @@ class AuthenticatorServiceProvider extends ServiceProvider {
 
     public function boot(\Illuminate\Contracts\Http\Kernel $kernel, \Illuminate\Routing\Router $router)
     {
-        $this->loadViewsFrom(__DIR__.'/Views', 'Authenticator');
+        //$this->loadViewsFrom(__DIR__.'/Views', 'Authenticator');
+        // Establish Views Namespace
+        if (is_dir(base_path('resources/views/Crtek/Authenticator'))) {
+            // The package views have been published - use those views.
+            $this->loadViewsFrom(base_path('resources/views/Crtek/Authenticator'), 'Authenticator');
+        } else {
+            // The package views have not been published. Use the defaults.
+            $this->loadViewsFrom(__DIR__.'/Views', 'Authenticator');
+        }
 
         $this->publishes([
             __DIR__.'/Config/Authenticator.php' => config_path('Authenticator.php'),
@@ -17,6 +25,7 @@ class AuthenticatorServiceProvider extends ServiceProvider {
         ]);
 
         $this->app->config->set('auth.model', $this->app->config->get('Authenticator.model'));
+        $this->app->config->set('jwt.user', $this->app->config->get('Authenticator.model'));
 
         include __DIR__.'/routes.php';
 

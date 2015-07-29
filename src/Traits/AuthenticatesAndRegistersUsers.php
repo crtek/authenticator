@@ -67,7 +67,7 @@ trait AuthenticatesAndRegistersUsers {
                 Mail::queue('Authenticator::activateAccount', $data, function($message) use ($user) {
                     $message->to($user->email, $user->name)->subject(config('Authenticator.email_subject'));
                 });
-                return view('user.activateAccount');
+                return view('Authenticator::activateAccountFirst')->with('user', $user);
             }
             else {
                 Session::flash('message', 'Your account couldn\'t be create please try again');
@@ -93,7 +93,7 @@ trait AuthenticatesAndRegistersUsers {
      * @return \Illuminate\Http\Response
      */
     public function postLogin(Request $request)
-    {return response()->json(array('request' => $request));
+    {
         $this->validate($request, [
             'email' => 'required', 'password' => 'required',
         ]);
@@ -162,5 +162,13 @@ trait AuthenticatesAndRegistersUsers {
     {
         return property_exists($this, 'loginPath') ? $this->loginPath : Config::get('Authenticator.login_page');
     }
-
+        /**
+     * Show the application login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getLogin()
+    {
+        return redirect('/'.config('Authenticator.login_page'));
+    }
 }

@@ -58,13 +58,7 @@ class Authentication extends AuthenticatorManager {
     }
 
     public function userHasLoggedIn($user, $stateless = false) {
-        if($stateless) {/*
-            echo '<pre>';
-            echo 'crtek'.$user->id();
-            print_r($user);
-            $token = JWTAuth::fromUser($user);
-            return response()->json(array('user' => $user)); 
-            exit();/**/
+        if($stateless) {
             $token = JWTAuth::fromUser($user);
             return response()->json(array('token' => $token, 'crtek' => 'crtek')); 
         }

@@ -25,6 +25,9 @@
                             </ul>
                         </div>
                     @endif
+                    @if(Session::has('message'))
+                        <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+                    @endif
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('auth/login') }}">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
@@ -60,16 +63,16 @@
             </div>
         </div>
         <div class="col-md-6" style="margin-bottom: 20px">
-            <a href="/auth/twitter" class="btn-lg btn btn-success col-md-12">Log in with Twitter</a>
+            <a href="/{{ $url }}/twitter" class="btn-lg btn btn-success col-md-12">Log in with Twitter</a>
         </div>
         <div class="col-md-6" style="margin-bottom: 20px">
-            <a href="/auth/facebook" class="btn-lg btn btn-success col-md-12">Log in with Facebook</a>
+            <a href="/{{ $url }}/facebook" class="btn-lg btn btn-success col-md-12">Log in with Facebook</a>
         </div>
         <div class="col-md-6" style="margin-bottom: 20px">
-            <a href="/auth/google" class="btn-lg btn btn-success col-md-12">Log in with Google</a>
+            <a href="/{{ $url }}/google" class="btn-lg btn btn-success col-md-12">Log in with Google</a>
         </div>
         <div class="col-md-6" style="margin-bottom: 20px">
-            <a href="/auth/github" class="btn-lg btn btn-success col-md-12">Log in with Github</a>
+            <a href="/{{ $url }}/github" class="btn-lg btn btn-success col-md-12">Log in with Github</a>
         </div>
     </div>
 </div>

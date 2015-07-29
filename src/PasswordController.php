@@ -3,7 +3,7 @@
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\PasswordBroker;
-use BCrtek\Authenticator\Traits\ResetsPasswords;
+use Crtek\Authenticator\Traits\ResetsPasswords;
 
 class PasswordController extends Controller {
 

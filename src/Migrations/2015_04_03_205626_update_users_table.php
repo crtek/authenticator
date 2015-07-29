@@ -23,6 +23,7 @@ class UpdateUsersTable extends Migration {
             $table->string('provider_id')->unique()->nullable();
             $table->string('activation_code')->nullable();
             $table->integer('active')->nullable();
+            $table->string('tel')->nullable();
         });
 	}
 
@@ -40,6 +41,7 @@ class UpdateUsersTable extends Migration {
         $table->dropColumn('provider_id');
         $table->dropColumn('activation_code');
         $table->dropColumn('active');
+        $table->dropColumn('tel');
 	}
 
 }

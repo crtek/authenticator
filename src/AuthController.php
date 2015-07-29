@@ -7,6 +7,7 @@ use Crtek\Authenticator\Models\User;
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Session;
 use Auth;
 
 class AuthController extends BaseController {
@@ -42,13 +43,20 @@ class AuthController extends BaseController {
 
     public function accountIsActive($code) {
         $user = User::where('activation_code', '=', $code)->first();
-        $user->active = 1;
-        $user->activation_code = '';
-        if($user->save()) {
-            Auth::loginUsingId($user->id);
+        if($user){
+            $user->active = 1;
+            $user->activation_code = '';
+            if($user->save()) {
+                Session::flash('message', 'Your account has been activated. You can login now!');
+                return redirect(config('Authenticator.login_page'));
+                //Auth::loginUsingId($user->id);
+            }
+        }else{
+            return redirect('auth/register/')
+            ->withErrors([
+                'email' => 'Please create a valid account to login.'
+            ]);
         }
-
-        return redirect(config('Authenticator.login_redirect'));
     }
 
 }
